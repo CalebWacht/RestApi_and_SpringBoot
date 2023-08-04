@@ -14,18 +14,46 @@ public class MathController {
 	
 	private static final AtomicLong counter = new AtomicLong();
 	
-	@RequestMapping(value = "/sum/{numberOne}/{numberTwo}",
+	@RequestMapping(value = "/sum/{numberOne}/{operation}/{numberTwo}",
 			method=RequestMethod.GET)
 	public Double sum(
 			@PathVariable(value = "numberOne") String numberOne,
-			@PathVariable(value = "numberTwo") String numberTwo
+			@PathVariable(value = "numberTwo") String numberTwo,
+			@PathVariable(value = "operation") String operation
 			) throws Exception{
 		
 		if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
 			 throw new UnsupportedMathOperationException("Please set a numeric value");
 		}
 		
-		return convertToDouble(numberOne) + convertToDouble(numberTwo);
+		double numberOneDouble =  convertToDouble(numberOne);
+		double numberTwoDouble =  convertToDouble(numberTwo);
+		
+		switch (operation) {
+			case "+" :
+				return numberOneDouble + numberTwoDouble;
+				break;
+			
+			case "-":
+				return numberOneDouble - numberTwoDouble;
+				break;
+			
+			case "*":
+				return numberOneDouble * numberTwoDouble;
+				break;
+				
+			case "x":
+				return numberOneDouble * numberTwoDouble;
+				break;
+				
+			case "/":
+				return numberOneDouble / numberTwoDouble;
+				break;
+			
+			default: 
+				 throw new UnsupportedMathOperationException("Please set a valid operation");
+		} 
+		
 	}
 
 	private Double convertToDouble(String strNumber) {
